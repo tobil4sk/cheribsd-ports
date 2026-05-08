@@ -1,0 +1,22 @@
+diff --git data/skeletons/yacc.c data/skeletons/yacc.c
+index 1172e2e8..f67f8fe1 100644
+--- data/skeletons/yacc.c
++++ data/skeletons/yacc.c
+@@ -610,6 +610,8 @@ union yyalloc
+ 
+ # define YYCOPY_NEEDED 1
+ 
++# include <sys/cdefs.h>
++
+ /* Relocate STACK from its old location to the new one.  The
+    local variables YYSIZE and YYSTACKSIZE give the old and new number of
+    elements in the stack, and YYPTR gives the new location of the
+@@ -620,7 +622,7 @@ union yyalloc
+       {                                                                 \
+         YYPTRDIFF_T yynewbytes;                                         \
+         YYCOPY (&yyptr->Stack_alloc, Stack, yysize);                    \
+-        Stack = &yyptr->Stack_alloc;                                    \
++        Stack = __unbounded_addressof(yyptr->Stack_alloc);              \
+         yynewbytes = yystacksize * YYSIZEOF (*Stack) + YYSTACK_GAP_MAXIMUM; \
+         yyptr += yynewbytes / YYSIZEOF (*yyptr);                        \
+       }                                                                 \
