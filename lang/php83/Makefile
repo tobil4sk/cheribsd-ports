@@ -56,6 +56,8 @@ OPTIONS_EXCLUDE_powerpc64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
 OPTIONS_EXCLUDE_powerpc64_12=	DTRACE
 OPTIONS_EXCLUDE_riscv64=	DTRACE
 OPTIONS_EXCLUDE_sparc64=	DTRACE
+# dtrace support doesn't compile on purecap currently due to ABI mismatch in the clang-cpp wrapper
+OPTIONS_EXCLUDE_purecap=	DTRACE
 NO_OPTIONS_SORT=	yes
 OPTIONS_SUB=			yes
 
@@ -102,6 +104,11 @@ WARNING=		"!!! If you have a threaded Apache, you must build ${PHP_PORT} with ZT
 
 .if ${ARCH} == riscv64
 CONFIGURE_ARGS+=	--without-pcre-jit
+.endif
+
+.if ${ABI:Mpurecap}
+# pcre jit doesn't support purecap
+CONFIGURE_ARGS+=        --without-pcre-jit
 .endif
 
 .if ${PORT_OPTIONS:MPHPDBG} && ${PORT_OPTIONS:MDEBUG}
